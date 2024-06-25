@@ -4,27 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Principal</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="funciones.js"></script>
 </head>
-<body>
-    <header>
-        <div>
-            <p><center>POMODORO</center></p>
+
+    <nav>
+        <a href="index.html">Pomodoro</a>
+        <a href="materias.html">Materias</a>
+        <a href="playlist.html">Playlist</a>
+    </nav>
+    
+    <body>
+         <div class="wrapper">
+        <div class="time">
+            <span id="Horas">00</span>
+            <span class="colon">:</span>
+            <span id="Minutos">00</span>
+            <span class="colon">:</span>
+            <span id="Segundos">00</span>
+            <span class="colon ms-color">:</span>
+            <span id="Centesimas">00</span>
         </div>
-    </header>
-    <main>
-        <div id="contenedor">
-		<div class="reloj" id="Horas">00</div>
-		<div class="reloj" id="Minutos">:00</div>
-		<div class="reloj" id="Segundos">:00</div>
-		<div class="reloj" id="Centesimas">:00</div>
-		<input type="button" class="boton" id="inicio" value="Start &#9658;" onclick="inicio();">
-		<input type="button" class="boton" id="parar" value="Stop &#8718;" onclick="parar();" disabled>
-		<input type="button" class="boton" id="continuar" value="Resume &#8634;" onclick="inicio();" disabled>
-		<input type="button" class="boton" id="reinicio" value="Reset &#8635;" onclick="reinicio();" disabled>
-	</div>
-    </main>
-</body>
+
+        <div class="buttons">
+            <button id="inicio" onclick="inicio()">Star</button>
+            <button id="parar" onclick="parar()" disabled>Stop</button>
+            <button id="continuar" onclick="inicio()" disabled>Continue</button>
+            <button id="reinicio" onclick="reinicio()" disabled>Reset</button>
+        </div>
+    </div>
+    </body>
 </html>
