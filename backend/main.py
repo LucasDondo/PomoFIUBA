@@ -7,15 +7,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 
 
-@app.route("/")
-def hello():
-    return "Hello, World!"
-
-
-@app.route("/cursos", methods=["GET"])
-def get_courses():
+@app.get("/cursos")
+def courses():
     response = Course.query.all()
-    print(response)
     courses = []
     for course in response:
         courses.append(
@@ -24,18 +18,33 @@ def get_courses():
     return jsonify(courses)
 
 
-@app.route("/nuevo_curso", methods=["POST"])
+@app.post("/nuevo_curso")
 def new_course():
     try:
         data = request.json
         name = data.get("name")
         credits = data.get("credits")
-        if not name or not credits:
-            return jsonify({"message": "Bad request: name or credits not found"}), 400
+        if not name and not credits:
+            response = (
+                jsonify(
+                    {"message": "Bad request: course name and ID must be provided."}
+                ),
+                400,
+            )
+        elif not name:
+            response = (
+                jsonify({"message": "Bad request: course name must be provided."}),
+                400,
+            )
+        elif not credits:
+            response = (
+                jsonify({"message": "Bad request: course ID must be provided."}),
+                400,
+            )
         new_course = Course(name=name, credits=credits)
         db.session.add(new_course)
         db.session.commit()
-        return (
+        response = (
             jsonify(
                 {
                     "course": {
@@ -47,8 +56,27 @@ def new_course():
             ),
             201,
         )
+    except Exception:
+        response = jsonify({"message": "Internal server error."}), 500
+    return response
+
+
+@app.delete("/eliminar_curso/<id>")
+def delete_course(id):
+    try:
+        course_name = Course.query.filter_by(id=id).first().__dict__["name"]
+        if course_name:
+            Course.query.filter_by(id=id).delete()
+            db.session.commit()
+            response = (
+                jsonify({"message": f"{course_name} deleted successfully."}),
+                200,
+            )
+        else:
+            response = jsonify({"message": f"Course of ID {id} does not exist."}), 400
     except Exception as error:
-        return jsonify({"message": error.message}), 500
+        response = jsonify({"message": error}), 500
+    return response
 
 
 if __name__ == "__main__":
