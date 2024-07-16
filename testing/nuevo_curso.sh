@@ -1,0 +1,1 @@
+curl http://localhost:5000/nuevo_curso -H 'Content-Type: application/json' -d "{\"name\": \"$1\", \"credits\": $2}"
