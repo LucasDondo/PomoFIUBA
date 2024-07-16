@@ -1,0 +1,1 @@
+curl http://localhost:5000/eliminar_curso/$1 -X DELETE -H 'Content-Type: application/json'
