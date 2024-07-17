@@ -3,9 +3,11 @@ from models import db, Course
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "postgresql+psycopg2://postgres:postgres@localhost:5432/pomofiuba_db"
+    "postgresql+psycopg2://nico:nico@localhost:5432/pomofiuba_db"
 )
 
+# Inicializa la instancia de SQLAlchemy con la app
+db.init_app(app)
 
 @app.get("/cursos")
 def courses():
@@ -78,6 +80,31 @@ def delete_course(id):
         response = jsonify({"message": error}), 500
     return response
 
+
+@app.put("/cursos/<int:id>")
+def update_course(id):
+    try:
+        data = request.json
+        name = data.get("name")
+        credits = data.get("credits")
+        course = Course.query.filter_by(id=id).first()
+        if course:
+            if name:
+                course.name = name
+            if credits:
+                course.credits = credits
+            db.session.commit()
+            return jsonify({
+                "course": {
+                    "id": course.id,
+                    "name": course.name,
+                    "credits": course.credits
+                }
+            })
+        else:
+            return jsonify({"message": f"Course with ID {id} does not exist."}), 404
+    except Exception as error:
+        return jsonify({"message": str(error)}), 500
 
 if __name__ == "__main__":
     db.init_app(app)
