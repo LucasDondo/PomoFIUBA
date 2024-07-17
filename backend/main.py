@@ -1,11 +1,15 @@
 from flask import Flask, request, jsonify
-from models import db, Course, Student
+from models import db, Course, Sesion
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     "postgresql+psycopg2://postgres:postgres@localhost:5432/pomofiuba_db"
 )
 
+# Inicializa la instancia de SQLAlchemy con la app
+db.init_app(app)
+
+# Crea las tablas en la base de datos
 
 @app.get("/cursos")
 def courses():
@@ -56,16 +60,16 @@ def new_course():
             ),
             201,
         )
-    except Exception as error:
-        response = jsonify({"message": str(error)}), 500
+    except Exception:
+        response = jsonify({"message": "Internal server error."}), 500
     return response
 
 
 @app.delete("/eliminar_curso/<id>")
 def delete_course(id):
     try:
-        if Course.query.filter_by(id=id).first():
-            course_name = Course.query.filter_by(id=id).first().__dict__["name"]
+        course_name = Course.query.filter_by(id=id).first().__dict__["name"]
+        if course_name:
             Course.query.filter_by(id=id).delete()
             db.session.commit()
             response = (
@@ -73,14 +77,14 @@ def delete_course(id):
                 200,
             )
         else:
-            response = jsonify({"message": f"Course of ID {id} does not exist."}), 404
+            response = jsonify({"message": f"Course of ID {id} does not exist."}), 400
     except Exception as error:
-        response = jsonify({"message": str(error)}), 500
+        response = jsonify({"message": error}), 500
     return response
 
 
-@app.put("/editar_curso_<int:id>")
-def edit_course(id):
+@app.put("/cursos/<int:id>")
+def update_course(id):
     try:
         data = request.json
         name = data.get("name")
@@ -92,140 +96,79 @@ def edit_course(id):
             if credits:
                 course.credits = credits
             db.session.commit()
-            return jsonify(
-                {
-                    "course": {
-                        "id": course.id,
-                        "name": course.name,
-                        "credits": course.credits,
-                    }
+            return jsonify({
+                "course": {
+                    "id": course.id,
+                    "name": course.name,
+                    "credits": course.credits
                 }
-            )
+            })
         else:
             return jsonify({"message": f"Course with ID {id} does not exist."}), 404
     except Exception as error:
         return jsonify({"message": str(error)}), 500
 
+@app.get("/sesiones")
+def get_sessions():
+    response = Sesion.query.all()
+    sessions = [{"id": sesion.id, "course_id": sesion.course_id, "mins_studied": sesion.mins_studied} for sesion in response]
+    return jsonify(sessions)
 
-@app.get("/estudiantes")
-def students():
-    response = Student.query.all()
-    students = [
-        {
-            "id": student.id,
-            "name": student.name,
-            "age": student.age,
-            "course_id": student.course_id,
-        }
-        for student in response
-    ]
-    return jsonify(students)
-
-
-@app.post("/nuevo_estudiante")
-def new_student():
+@app.post("/nueva_sesion")
+def new_session():
     try:
         data = request.json
-        name = data.get("name")
-        age = data.get("age")
         course_id = data.get("course_id")
-        if not name or not age or not course_id:
-            return (
-                jsonify(
-                    {
-                        "message": "Bad request: student name, age, and course_id must be provided."
-                    }
-                ),
-                400,
-            )
+        mins_studied = data.get("mins_studied", 0)
+        if not course_id:
+            return jsonify({"message": "Bad request: course_id must be provided."}), 400
         course = Course.query.get(course_id)
         if not course:
-            return (
-                jsonify({"message": f"Course with ID {course_id} does not exist."}),
-                404,
-            )
-        new_student = Student(name=name, age=age, course_id=course_id)
-        db.session.add(new_student)
+            return jsonify({"message": f"Course with ID {course_id} does not exist."}), 404
+        new_session = Sesion(course_id=course_id, mins_studied=mins_studied)
+        db.session.add(new_session)
         db.session.commit()
-        return (
-            jsonify(
-                {
-                    "student": {
-                        "id": new_student.id,
-                        "name": new_student.name,
-                        "age": new_student.age,
-                        "course_id": new_student.course_id,
-                    }
-                }
-            ),
-            201,
-        )
+        return jsonify({"session": {"id": new_session.id, "course_id": new_session.course_id, "mins_studied": new_session.mins_studied}}), 201
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
-
-@app.delete("/eliminar_estudiante/<int:id>")
-def delete_student(id):
+@app.delete("/eliminar_sesion/<int:id>")
+def delete_session(id):
     try:
-        student = Student.query.get(id)
-        if student:
-            db.session.delete(student)
+        session = Sesion.query.get(id)
+        if session:
+            db.session.delete(session)
             db.session.commit()
-            return (
-                jsonify({"message": f"Student with ID {id} deleted successfully."}),
-                200,
-            )
+            return jsonify({"message": f"Session with ID {id} deleted successfully."}), 200
         else:
-            return jsonify({"message": f"Student with ID {id} does not exist."}), 404
+            return jsonify({"message": f"Session with ID {id} does not exist."}), 404
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
-
-@app.put("/estudiantes/<int:id>")
-def update_student(id):
+@app.put("/sesiones/<int:id>")
+def update_session(id):
     try:
         data = request.json
-        name = data.get("name")
-        age = data.get("age")
         course_id = data.get("course_id")
-        student = Student.query.get(id)
-        if student:
-            if name:
-                student.name = name
-            if age:
-                student.age = age
+        mins_studied = data.get("mins_studied")
+        session = Sesion.query.get(id)
+        if session:
             if course_id:
                 course = Course.query.get(course_id)
                 if not course:
-                    return (
-                        jsonify(
-                            {"message": f"Course with ID {course_id} does not exist."}
-                        ),
-                        404,
-                    )
-                student.course_id = course_id
+                    return jsonify({"message": f"Course with ID {course_id} does not exist."}), 404
+                session.course_id = course_id
+            if mins_studied is not None:
+                session.mins_studied = mins_studied
             db.session.commit()
-            return (
-                jsonify(
-                    {
-                        "student": {
-                            "id": student.id,
-                            "name": student.name,
-                            "age": student.age,
-                            "course_id": student.course_id,
-                        }
-                    }
-                ),
-                200,
-            )
+            return jsonify({"session": {"id": session.id, "course_id": session.course_id, "mins_studied": session.mins_studied}}), 200
         else:
-            return jsonify({"message": f"Student with ID {id} does not exist."}), 404
+            return jsonify({"message": f"Session with ID {id} does not exist."}), 404
     except Exception as e:
         return jsonify({"message": str(e)}), 500
-
-
+ 
 if __name__ == "__main__":
-    db.init_app(app)
+    app.init_app(app)
     with app.app_context():
         db.create_all()
-    app.run()
+    app.run
