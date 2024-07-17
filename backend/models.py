@@ -10,7 +10,7 @@ class Course(db.Model):
     mins_studied = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
-        return f"<Course {self.name}><ID {self.id}><Credits {self.credits}><{self.mins_studied} minutes studied>"
+        return f"<Course {self.name}><ID {self.id}><{self.credits} credits><{self.mins_studied} minutes studied>"
 
 class Student(db.Model):
     __tablename__ = "students"
