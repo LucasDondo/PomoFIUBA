@@ -12,7 +12,7 @@ class Course(db.Model):
     sesions = db.relationship('Sesion', backref='course', lazy=True)
 
     def __repr__(self):
-        return f"<Course {self.name}><ID {self.id}><Credits {self.credits}><{self.mins_studied} minutes studied>"
+        return f"<Course {self.name}><ID {self.id}><{self.credits} credits><{self.mins_studied} minutes studied>"
 
 class Sesion(db.Model):
     __tablename__ = "sesion"
