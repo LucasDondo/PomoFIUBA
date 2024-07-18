@@ -8,6 +8,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
     "postgresql+psycopg2://postgres:postgres@localhost:5432/pomofiuba_db"
 )
 
+#Please don´t delete it :c
+db.init_app(app)
 
 @app.get("/cursos")
 def courses():
