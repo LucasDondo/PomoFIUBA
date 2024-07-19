@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}Crear Nueva Sesión{% endblock %}
+
+{% block body %}
+<h1>Crear Nueva Sesión</h1>
+
+<form action="{{ url_for('nueva_sesion') }}" method="post">
+  <div class="form-group">
+    <label for="course_id">ID del Curso</label>
+    <input type="text" id="course_id" name="course_id" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="mins_studied">Minutos Estudiados</label>
+    <input type="number" id="mins_studied" name="mins_studied" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+{% if message %}
+  <div class="alert alert-info mt-3">{{ message }}</div>
+{% endif %}
+
+<a href="{{ url_for('sesiones') }}" class="btn btn-secondary mt-3">Volver a la lista de sesiones</a>
+{% endblock %}
+
+{% block script %}nueva_sesion{% endblock %}
