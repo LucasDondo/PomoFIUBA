@@ -1,127 +1,116 @@
-var centesimas = 0;
-var segundos = 0;
-var minutos = 0;
-var horas = 0;
+let horas = 0, minutos = 0, segundos = 0, centesimas = 0;
+let tiempoTotalEnMinutos = 0;
+let tiempoTotalEnSegundos = 0;
+let cronometroInterval;
+
+function iniciarCronometro() {
+    centesimas++;
+    if (centesimas > 99) {
+        centesimas = 0;
+        segundos++;
+        if (segundos > 59) {
+            segundos = 0;
+            minutos++;
+            if (minutos > 59) {
+                minutos = 0;
+                horas++;
+            }
+            document.getElementById("Minutos").innerHTML = minutos < 10 ? "0" + minutos : minutos;
+        }
+        document.getElementById("Segundos").innerHTML = segundos < 10 ? "0" + segundos : segundos;
+    }
+    document.getElementById("Centesimas").innerHTML = centesimas < 10 ? "0" + centesimas : centesimas;
+
+    tiempoTotalEnSegundos = horas * 3600 + minutos * 60 + segundos;
+}
 
 function start() {
-	control = setInterval(cronometro, 10);
-	document.getElementById("start").disabled = true;
-	document.getElementById("stop").disabled = false;
-	document.getElementById("continue").disabled = true;
+    cronometroInterval = setInterval(iniciarCronometro, 10);
+    document.getElementById("start").disabled = true;
+    document.getElementById("stop").disabled = false;
+    document.getElementById("reset").disabled = false;
 }
 
 function stop() {
-	clearInterval(control);
-	document.getElementById("stop").disabled = true;
-	document.getElementById("continue").disabled = false;
+    clearInterval(cronometroInterval);
+    document.getElementById("stop").disabled = true;
+    document.getElementById("continue").disabled = false;
 }
 
-function reinicio() {
-	clearInterval(control);
-	centesimas = 0;
-	segundos = 0;
-	minutos = 0;
-	horas = 0;
-	Centesimas.innerHTML = "00";
-	Segundos.innerHTML = "00";
-	Minutos.innerHTML = "00";
-	Horas.innerHTML = "00";
-	document.getElementById("inicio").disabled = false;
-	document.getElementById("parar").disabled = true;
-	document.getElementById("continuar").disabled = true;
-	document.getElementById("reinicio").disabled = true;
-}
-
-function cronometro() {
-	if (centesimas < 99) {
-		centesimas++;
-		if (centesimas < 10) { centesimas = "0" + centesimas }
-		Centesimas.innerHTML = centesimas;
-	}
-	if (centesimas == 99) {
-		centesimas = -1;
-	}
-	if (centesimas == 0) {
-		segundos++;
-		if (segundos < 10) { segundos = "0" + segundos }
-		Segundos.innerHTML = segundos;
-	}
-	if (segundos == 59) {
-		segundos = -1;
-	}
-	if ((centesimas == 0) && (segundos == 0)) {
-		minutos++;
-		if (minutos < 10) { minutos = "0" + minutos }
-		Minutos.innerHTML = minutos;
-	}
-	if (minutos == 59) {
-		minutos = -1;
-	}
-	if ((centesimas == 0) && (segundos == 0) && (minutos == 0)) {
-		horas++;
-		if (horas < 10) { horas = "0" + horas }
-		Horas.innerHTML = horas;
-	}
-}
-
-/*
-let hr = "0" + 0, min = "0" + 0, sec = "0" + 0, ms = "0" + 0, startTimer;
-
-const startBtn = document.querySelector(".start"),
-			stopBtn = document.querySelector(".stop"),
-			resetBtn = document.querySelector(".reset");
-
-startBtn.addEventListener("click", start);
-stopBtn.addEventListener("click", stop);
-resetBtn.addEventListener("click", reset);
-
-function start() {
-		startBtn.classList.add("active");
-		stopBtn.classList.add("stopActive"); // Asumiendo que quieres agregar esta clase aquí
-
-		startTimer = setInterval(() => {
-				ms++;
-				ms = ms < 10 ? "0" + ms : ms;
-
-				if (ms == 100) {
-						sec++;
-						sec = sec < 10 ? "0" + sec : sec;
-						ms = "0" + 0;
-				}
-				if (sec == 60) {
-						min++;
-						min = min < 10 ? "0" + min : min;
-						sec = "0" + 0;
-				}
-				if (min == 60) {
-						hr++;
-						hr = hr < 10 ? "0" + hr : hr;
-						min = "0" + 0;
-				}
-
-				putValue();
-
-		}, 10);
-}
-
-function stop() {
-		startBtn.classList.remove("active");
-		stopBtn.classList.add("stopActive"); // Corregido para mantener consistencia
-		clearInterval(startTimer);
+function continue_studying() {
+    cronometroInterval = setInterval(iniciarCronometro, 10);
+    document.getElementById("continue").disabled = true;
+    document.getElementById("stop").disabled = false;
 }
 
 function reset() {
-		clearInterval(startTimer);
-		startBtn.classList.remove("active");
-		stopBtn.classList.remove("stopActive"); // Asegurarse de remover la clase correcta
-		hr = min = sec = ms = "0" + 0;
-		putValue();
+    clearInterval(cronometroInterval);
+    horas = 0;
+    minutos = 0;
+    segundos = 0;
+    centesimas = 0;
+    document.getElementById("Horas").innerHTML = "00";
+    document.getElementById("Minutos").innerHTML = "00";
+    document.getElementById("Segundos").innerHTML = "00";
+    document.getElementById("Centesimas").innerHTML = "00";
+    document.getElementById("start").disabled = false;
+    document.getElementById("stop").disabled = true;
+    document.getElementById("continue").disabled = true;
+    document.getElementById("reset").disabled = true;
 }
 
-function putValue() {
-		document.querySelector('.millisecond').innerHTML = ms;
-		document.querySelector('.second').innerHTML = sec;
-		document.querySelector('.minute').innerHTML = min;
-		document.querySelector('.hour').innerHTML = hr;
+function actualizarTiempoTotal() {
+    tiempoTotalEnMinutos = horas * 60 + minutos;
 }
+/* 	INTENTO DE ENVIAR DATOS A UN SERVIDOR QUE NO ME SALIO ;C
+function enviarTiempoDeEstudioAlServidor() {
+    const urlDelServidor = "http://localhost:5000";
+
+    const datosDeTiempo = {
+        tiempoDeEstudio: tiempoTotalEnSegundos
+    };
+
+    fetch(urlDelServidor, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datosDeTiempo)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Datos enviados con éxito:", data);
+    })
+    .catch(error => {
+        console.error("Error al enviar los datos:", error);
+    });
+}
+
+function enviarDatosASesion() {
+    actualizarTiempoTotal(); // Asegúrate de actualizar el tiempo total antes de enviar los datos
+    const datos = {
+        mins_studied: tiempoTotalEnMinutos // Envía el tiempo total en minutos
+    };
+
+    fetch('/guardar-sesion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+document.getElementById("start").addEventListener("click", start);
+document.getElementById("stop").addEventListener("click", stop);
+document.getElementById("continue").addEventListener("click", continue_studying);
+document.getElementById("reset").addEventListener("click", reset);
+document.getElementById("guardarSesion").addEventListener("click", enviarDatosASesion);
 */
