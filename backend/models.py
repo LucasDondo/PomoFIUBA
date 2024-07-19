@@ -9,7 +9,7 @@ class Course(db.Model):
     credits = db.Column(db.Integer, nullable=False)
     mins_studied = db.Column(db.Integer, nullable=False, default=0)
     
-    sesions = db.relationship('Sesion', backref='course', lazy=True)
+    sessions = db.relationship('Sesion', backref='course', lazy=True)
 
     def __repr__(self):
         return f"<Course {self.name}><ID {self.id}><{self.credits} credits><{self.mins_studied} minutes studied>"
