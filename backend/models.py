@@ -14,11 +14,11 @@ class Course(db.Model):
     def __repr__(self):
         return f"<Course {self.name}><ID {self.id}><{self.credits} credits><{self.mins_studied} minutes studied>"
 
-class Sesion(db.Model):
-    __tablename__ = "sesion"
+class Session(db.Model):
+    __tablename__ = "sessions"
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
     mins_studied = db.Column(db.Integer, nullable=False, default=0)
     
     def __repr__(self):
-        return f"<Sesion {self.id}><Course {self.course_id}><{self.mins_studied} minutes studied>"
+        return f"<ID {self.id}><Course {self.course_id}><{self.mins_studied} minutes studied>"
