@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %}Temporizador{% endblock %}
+
+{% block body %}
+
+<div class="form-container">
+    <form id="session-form">
+        <div class="form-group">
+            <label for="course-select">Selecciona un curso:</label>
+            <select id="course-select" name="course_id">
+                <!-- Opciones de cursos se llenarán con JS -->
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit">Agregar Sesión</button>
+        </div>
+    </form>
+</div>
+
+<div class="wrapper">
+    <div class="time">
+        <span id="Horas">00</span>
+        <span class="colon">:</span>
+        <span id="Minutos">00</span>
+        <span class="colon">:</span>
+        <span id="Segundos">00</span>
+        <span class="colon ms-color">:</span>
+        <span id="Centesimas">00</span>
+    </div>
+
+    <div class="buttons">
+        <button id="start" onclick="start()">Empezar</button>
+        <button id="stop" onclick="stop()" disabled>Pausar</button>
+        <button id="continue" onclick="continueReloj()" disabled>Continuar</button>
+        <button id="reset" onclick="reset()" disabled>Reiniciar</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para cargar los cursos en el select
+    function fetchCourses() {
+        fetch('/cursos')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('course-select');
+                data.forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.id;
+                    option.textContent = course.name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading courses:', error);
+            });
+    }
+
+    fetchCourses(); // Cargar los cursos al cargar la página
+
+    const form = document.getElementById('session-form');
+    
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+        const courseId = document.getElementById('course-select').value;
+        const minsStudied = parseInt(document.getElementById('Minutos').textContent); // Obtener los minutos estudiados del front
+
+        // Verificar que se haya seleccionado un curso
+        if (!courseId) {
+            alert('Por favor, selecciona un curso.');
+            return;
+        }
+
+        fetch('/nueva_sesion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                course_id: courseId,
+                mins_studied: minsStudied
+            })
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url; // Redirige en caso de éxito
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            // Maneja los datos de respuesta si es necesario
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+</script>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='temporizador.js') }}"></script>
+{% endblock %}
