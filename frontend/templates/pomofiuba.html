@@ -3,7 +3,19 @@
 {% block body %}
 <h1>PomoFIUBA</h1>
 <main>
-  <ul id="courses"></ul>
+  <ul id="courses_list">
+    <li id="new_course_form">
+      <form onsubmit="create_new_course(event)">
+        <button type="submit">Agregar</button>
+        curso
+        <input name="name" placeholder="tal" required>
+        de
+        <input name="credits" id="credits" type="number" min="1" max="144" value="1" onchange="set_plural_or_singular()"
+          required>
+        crédito<span id="plural">s</span>.
+      </form>
+    </li>
+  </ul>
 </main>
 {% endblock %}
 {% block script %}pomofiuba{% endblock %}
