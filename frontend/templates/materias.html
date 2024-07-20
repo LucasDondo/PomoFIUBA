@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Materias{% endblock %}
+
+{% block body %}
+
+<body>
+  <div class="wrapper">
+    <!-- Formulario de Materias -->
+    <div class="form-container">
+      <h2>Formulario de Materias</h2>
+      <form action="#">
+        <div class="form-group">
+          <label for="materia">Nombre de la Materia:</label>
+          <input type="text" id="materia" name="materia" required>
+        </div>
+        <div class="form-group">
+          <label for="carga">Carga Horaria:</label>
+          <input type="number" id="carga" name="carga" required>
+        </div>
+        <div class="form-group">
+          <button type="submit">Agregar Materia</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+{% endblock %}
+{% block script %}{% endblock %}
