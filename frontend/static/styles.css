@@ -1,0 +1,161 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+
+body {
+	height: 100vh;
+	display: flex;
+	flex-direction: column; /* Asegura que los elementos se alineen en columna */
+	justify-content: center;
+	align-items: center;
+	background: rgb(255, 255, 255);
+}
+
+nav {
+	background-color: rgb(211, 9, 9);
+	width: 100%;
+	padding: 10px 0;
+	text-align: center;
+	position: fixed; /* Fija el nav en la parte superior */
+	top: 0; /* Asegura que esté en la parte superior */
+	z-index: 1000; /* Asegura que esté por encima de otros elementos */
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Agrega sombra */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+nav a {
+	color: black;
+	text-decoration: none;
+	margin: 0 10px;
+	font-size: 18px;
+	padding: 10px 20px;
+	transition: color 0.3s, background-color 0.3s; /* Transiciones suaves */
+	border-radius: 5px; /* Bordes redondeados */
+	display: inline-block; /* Asegura que los enlaces ocupen el espacio indicado */
+}
+
+nav a:hover {
+	background-color: rgba(0, 0, 0, 0.2); /* Oscurecer el fondo al pasar el cursor */
+	text-decoration: none; /* Evita el subrayado al pasar el cursor */
+	color:rgb(66, 3, 3)
+}
+
+.wrapper {
+	margin-top: 20px; /* Espacio superior para separar del formulario */
+	text-align: center; /* Centra el contenido de la wrapper */
+	user-select: none;
+}
+
+.wrapper .time {
+    height: 100px;
+    background: rgb(211, 9, 9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.9);
+}
+
+.wrapper .time span {
+	width: 100px;
+	text-align: center;
+	font-size: 50px;
+	font-weight: 500;
+	color: black;
+}
+
+.time span.colon {
+	width:	10px;
+}
+
+.time span.ms-colon,
+.time span.millisecond {
+	color: black;
+}
+
+.wrapper .buttons {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.buttons button {
+	padding: 6px 16px;
+	outline: none;
+	border: none;
+	margin: 0 5px;
+	color : rgb(0, 0, 0);
+	background: rgb(211, 9, 9);
+	font-size: 19px;
+	font-weight: 500;
+	border: pointer;
+	box-shadow: 5px 3.5px 5px rgba(0, 0, 0, 0.9);
+}
+
+.buttons button.active,
+.buttons button.stopActive {
+	pointer-events: none;
+	opacity: .7;
+}
+
+.buttons button:active {
+  border: 2px solid black; /* Reemplaza #colorDeseado con el código de color hexadecimal que prefieras */
+}
+
+.buttons button:hover {
+	background: rgb(170, 5, 5);
+}
+
+/* Estilos para el formulario */
+.form-container {
+    width: 400px;
+    background-color: #efe9e9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Espacio inferior para separar del cronómetro */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.form-group select,
+.form-group input {
+    width: calc(100% - 12px);
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    outline: none;
+    border-color: rgb(211, 9, 9);
+    box-shadow: 0 0 5px rgba(211, 9, 9, 0.5);
+}
+
+.form-group button {
+    width: 100%;
+    padding: 12px;
+    background-color: rgb(211, 9, 9);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+    background-color: rgb(170, 5, 5);
+}
