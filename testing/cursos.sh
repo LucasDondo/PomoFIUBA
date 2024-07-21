@@ -1,1 +1,1 @@
-curl http://localhost:5000/cursos
+curl http://localhost:5000/courses

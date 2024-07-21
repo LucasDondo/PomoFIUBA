@@ -9,7 +9,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 
 
-@app.get("/cursos")
+@app.get("/courses")
 def courses():
     response = Course.query.all()
     courses = []
@@ -20,7 +20,7 @@ def courses():
     return jsonify(courses)
 
 
-@app.post("/nuevo_curso")
+@app.post("/new_course")
 def new_course():
     try:
         data = request.json
@@ -63,7 +63,7 @@ def new_course():
     return response
 
 
-@app.delete("/eliminar_curso_<int:id>")
+@app.delete("/delete_course_<int:id>")
 def delete_course(id):
     try:
         if Course.query.filter_by(id=id).first():
@@ -81,7 +81,7 @@ def delete_course(id):
     return response
 
 
-@app.put("/editar_curso_<int:id>")
+@app.put("/edit_course_<int:id>")
 def update_course(id):
     try:
         data = request.json
@@ -140,29 +140,8 @@ def new_session():
         return jsonify({"message": str(error)}), 500
 
 
-@app.route("/datos_temporizador", methods=["GET"])
-def datos_temporizador():
-    courses = Course.query.all()
-    sessions = Sesion.query.all()
-
-    courses_data = [
-        {"id": course.id, "name": course.name, "credits": course.credits}
-        for course in courses
-    ]
-    sessions_data = [
-        {
-            "id": session.id,
-            "course_id": session.course_id,
-            "mins_studied": session.mins_studied,
-        }
-        for session in sessions
-    ]
-
-    return jsonify({"courses": courses_data, "sessions": sessions_data})
-
-
-@app.get("/sesiones")
-def get_sessions():
+@app.get("/sessions")
+def sessions():
     try:
         sessions = Sesion.query.all()
         sessions_data = [
@@ -205,12 +184,12 @@ def edit_session():
         return jsonify({"message": str(error)}), 500
 
 
-@app.delete("/eliminar_todas_sesiones")
-def eliminar_todas_sesiones():
+@app.delete("/delete_sessions")
+def delete_sessions():
     try:
-        Sesion.query.delete() 
+        Sesion.query.delete()
         db.session.commit()
-        return jsonify({"message": "Todas las sesiones han sido eliminadas exitosamente."}), 200
+        return jsonify({"message": "All sessions had been deleted."}), 200
     except Exception as error:
         return jsonify({"message": str(error)}), 500
 

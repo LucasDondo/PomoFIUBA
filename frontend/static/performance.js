@@ -1,5 +1,7 @@
+const BASE_URL = "http://localhost:5000";
+
 function fetchCoursesAndSessions() {
-    fetch('http://localhost:5000/cursos')
+    fetch(`${BASE_URL}/courses`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error fetching courses');
@@ -7,7 +9,7 @@ function fetchCoursesAndSessions() {
             return response.json();
         })
         .then(courses => {
-            return fetch('http://localhost:5000/sesiones')
+            return fetch(`${BASE_URL}/sessions`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error fetching sessions');
@@ -54,37 +56,35 @@ function fetchCoursesAndSessions() {
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    fetchCoursesAndSessions();
-});
+fetchCoursesAndSessions();
 
 function deleteAllSessions() {
-    fetch('http://localhost:5000/eliminar_todas_sesiones', {
+    fetch(`${BASE_URL}/delete_sessions`, {
         method: 'DELETE',
     })
-    .then(response => {
-        console.log('Response status:', response.status);
-        if (!response.ok) {
-            throw new Error('Error deleting sessions');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Response data:', data);
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error('Error deleting sessions');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
 
-        if (data.message) {
-            console.log(data.message);
-            document.getElementById('courses-info').innerHTML = data.message;
-        } else {
-            document.getElementById('courses-info').innerHTML = 'Sesiones eliminadas exitosamente.';
-        }
+            if (data.message) {
+                console.log(data.message);
+                document.getElementById('courses-info').innerHTML = data.message;
+            } else {
+                document.getElementById('courses-info').innerHTML = 'Sesiones eliminadas exitosamente.';
+            }
 
-        fetchCoursesAndSessions();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('courses-info').innerHTML = 'Error deleting sessions.';
-    });
+            fetchCoursesAndSessions();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('courses-info').innerHTML = 'Error deleting sessions.';
+        });
 }
 
 document.getElementById('new-week-button').addEventListener('click', deleteAllSessions);

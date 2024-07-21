@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
-{% block title %}PomoFIUBA{% endblock %}
+{% block title %}Cursos{% endblock %}
 {% block body %}
-<h1>PomoFIUBA</h1>
+<h1>Cursos</h1>
 <main>
   <div class="wrapper">
     <ul id="courses_list">
@@ -14,12 +14,12 @@
             </div>
             <div class="form-group">
               <label for="credits">Créditos:</label>
-              <input name="credits" id="credits" type="number" min="1" max="144" value="1" onchange="set_plural_or_singular()" required>
+              <input name="credits" id="credits" type="number" min="1" max="144" value="1"
+                onchange="setPluralOrSingular()" required>
             </div>
             <div class="form-group">
               <button type="submit">Agregar</button>
             </div>
-            
           </form>
         </div>
       </li>
@@ -27,4 +27,4 @@
   </div>
 </main>
 {% endblock %}
-{% block script %}pomofiuba{% endblock %}
+{% block script %}courses{% endblock %}

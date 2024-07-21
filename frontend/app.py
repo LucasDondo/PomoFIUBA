@@ -4,7 +4,8 @@ from flask_cors import CORS
 app = Flask(__name__, "/static")
 CORS(app)
 
-@app.route("/")
+
+@app.route("/cursos")
 def courses():
     return render_template("courses.html")
 
@@ -13,13 +14,16 @@ def courses():
 def timer():
     return render_template("timer.html")
 
-@app.route("/library")
+
+@app.route("/rendimiento")
 def library():
-    return render_template("library.html")
+    return render_template("performance.html")
+
 
 @app.route("/playlist")
 def playlist():
     return render_template("playlist.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:5000";
 const INIT_TIMES = 0, ZERO = "0", DOUBLE_ZERO = "00";
 let hours = INIT_TIMES, mins = INIT_TIMES, secs = INIT_TIMES, hundredths = INIT_TIMES;
-let interval_id, sessionId;
+let intervalId, sessionId;
 
 function loop() {
     hundredths++;
@@ -34,26 +34,26 @@ function loop() {
 }
 
 function start() {
-    interval_id = setInterval(loop, 10);
+    intervalId = setInterval(loop, 10);
     document.getElementById("start").disabled = true;
     document.getElementById("stop").disabled = false;
     document.getElementById("reset").disabled = false;
 }
 
 function stop() {
-    clearInterval(interval_id);
+    clearInterval(intervalId);
     document.getElementById("stop").disabled = true;
     document.getElementById("continue").disabled = false;
 }
 
 function continueTimer() {
-    interval_id = setInterval(loop, 10);
+    intervalId = setInterval(loop, 10);
     document.getElementById("continue").disabled = true;
     document.getElementById("stop").disabled = false;
 }
 
 function reset() {
-    clearInterval(interval_id);
+    clearInterval(intervalId);
     hours = INIT_TIMES, mins = INIT_TIMES, secs = INIT_TIMES, hundredths = INIT_TIMES;
 
     document.getElementById("hours").innerHTML = DOUBLE_ZERO;
@@ -125,7 +125,7 @@ function saveSession(minsStudied) {
 }
 
 function loadCourses() {
-    fetch(`${BASE_URL}/cursos`)
+    fetch(`${BASE_URL}/courses`)
         .then(response => response.json())
         .then(data => {
             const courseSelect = document.getElementById('course-select');
