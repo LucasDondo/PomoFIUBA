@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Biblioteca{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="main-title">Biblioteca</h1>
+        <h3 class="section-title">Información de Cursos</h3>
+
+        <!-- Texto explicativo resumido -->
+        <p class="info-text">Los créditos indican el tiempo de estudio recomendado por semana:</p>
+        <ul class="info-list">
+            <li>1 crédito ≈ 2-3 horas.</li>
+            <li>Ejemplo: 5 créditos ≈ 10-15 horas.</li>
+        </ul>
+
+        <!-- Contenedor de cuadrícula para la información de los cursos -->
+        <div id="courses-info" class="courses-grid"></div>
+    </div>
+{% endblock %}
+
+{% block script %}info_course{% endblock %}
