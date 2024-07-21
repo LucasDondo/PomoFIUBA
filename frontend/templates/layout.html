@@ -5,11 +5,17 @@
   <title>{% block title %}{% endblock %}</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="stylesheet" href="styles.css"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 </head>
 
 <body>
+    <nav>
+      <a href="{{ url_for('timer') }}">Temporizador</a>
+      <a href="{{ url_for('pomofiuba') }}">Pomodoro</a>
+      <a href="{{ url_for('biblioteca') }}">Biblioteca</a>
+      <a href="{{ url_for('playlist') }}">Playlist</a>
+    </nav>
   {% block body %}{% endblock %}
   <script src="../static/{% block script %}{% endblock %}.js"></script>
 </body>
