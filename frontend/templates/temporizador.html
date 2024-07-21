@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}Temporizador{% endblock %}
+
+{% block body %}
+
+<div class="form-container">
+    <form id="session-form">
+        <div class="form-group">
+            <label for="course-select">Selecciona un curso:</label>
+            <select id="course-select" name="course_id">
+                <!-- Opciones de cursos se llenarán con JS -->
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit">Agregar Sesión</button>
+        </div>
+    </form>
+</div>
+
+<div class="wrapper">
+    <div class="time">
+        <span id="Horas">00</span>
+        <span class="colon">:</span>
+        <span id="Minutos">00</span>
+        <span class="colon">:</span>
+        <span id="Segundos">00</span>
+        <span class="colon ms-color">:</span>
+        <span id="Centesimas">00</span>
+    </div>
+
+    <div class="buttons">
+        <button id="start" onclick="start()">Empezar</button>
+        <button id="stop" onclick="stop()" disabled>Pausar</button>
+        <button id="continue" onclick="continueReloj()" disabled>Continuar</button>
+        <button id="reset" onclick="reset()" disabled>Reiniciar</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}temporizador{% endblock %}
