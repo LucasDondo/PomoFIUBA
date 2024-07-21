@@ -10,7 +10,7 @@ def pomofiuba():
 
 @app.route("/temporizador")
 def temporizador():
-    return render_template("temporizador.html")
+    return render_template("timer.html")
 
 @app.route("/playlist")
 def playlist():
