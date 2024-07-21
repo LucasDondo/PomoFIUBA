@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Prevenir el envío por defecto del formulario
 
         const courseId = document.getElementById('course-select').value;
-        const minsStudied = parseInt(document.getElementById('Minutos').textContent); // Obtener los mins estudiados del front
+        const minsStudied = parseInt(document.getElementById('mins').textContent); // Obtener los mins estudiados del front
 
         // Verificar que se haya seleccionado un curso
         if (!courseId) {
