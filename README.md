@@ -4,3 +4,5 @@ Este proyecto surgió con el fin de completar el TP del curso [Introducción al 
 ## 👥 Integrantes
 - [Lucas Dondo](https://github.com/LucasDondo)
 - [Nicolás Francisco Mazzeo](https://github.com/ElMalditoNINE9)
+## 🔗 Bibliografía extra
+- Hemos utilizado _[template inheritance](https://flask.palletsprojects.com/en/latest/patterns/templateinheritance)_ para que todos los archivos HTML sean consistentes.
