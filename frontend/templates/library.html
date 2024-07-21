@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}library{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="main-title">Library</h1>
+
+        <div class="button-container">
+            <button id="new-week-button" class="buttons_small">New Week</button>
+        </div>
+
+
+        <div id="courses-info" class="courses-grid"></div>
+    </div>
+{% endblock %}
+
+{% block script %}info_course{% endblock %}

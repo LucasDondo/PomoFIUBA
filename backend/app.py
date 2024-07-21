@@ -205,6 +205,16 @@ def edit_session():
         return jsonify({"message": str(error)}), 500
 
 
+@app.delete("/eliminar_todas_sesiones")
+def eliminar_todas_sesiones():
+    try:
+        Sesion.query.delete() 
+        db.session.commit()
+        return jsonify({"message": "Todas las sesiones han sido eliminadas exitosamente."}), 200
+    except Exception as error:
+        return jsonify({"message": str(error)}), 500
+
+
 if __name__ == "__main__":
     db.init_app(app)
     with app.app_context():

@@ -77,19 +77,19 @@ function createSession(courseId, minsStudied) {
             "mins_studied": minsStudied
         })
     })
-        .then(response => response.json())
-        .then(data => {
-            if (data.session) {
-                sessionId = data.session.id
-            } else {
-                throw new Error("Error while creating the new session. No session object was returned.");
-            }
-        })
-        .catch(error => {
-            console.error(error);
-            alert("Ocurrió un error al crear la sesión. Seguí estudiando, a ver si se resuelve.");
-        });
-};
+    .then(response => response.json())
+    .then(data => {
+        if (data.session) {
+            sessionId = data.session.id;
+        } else {
+            throw new Error("Error while creating the new session. No session object was returned.");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Ocurrió un error al crear la sesión. Seguí estudiando, a ver si se resuelve.");
+    });
+}
 
 function editSession(id, minsStudied) {
     fetch(`${BASE_URL}/edit_session`, {
@@ -102,20 +102,22 @@ function editSession(id, minsStudied) {
             "mins_studied": minsStudied
         })
     })
-        .then(response => response.json())
-        .catch(error => {
-            console.error(error);
-            alert("Ocurrió un error al editar la sesión. Seguí estudiando, a ver si se resuelve.");
-        });
+    .then(response => response.json())
+    .catch(error => {
+        console.error(error);
+        alert("Ocurrió un error al editar la sesión. Seguí estudiando, a ver si se resuelve.");
+    });
 }
 
 function saveSession(minsStudied) {
     const courseId = document.getElementById('course-select').value;
 
-    if (minsStudied == 1) {
-        createSession(courseId, minsStudied);
-    } else if (minsStudied > 1) {
-        editSession(sessionId, minsStudied);
+    if (minsStudied > 0) {
+        if (sessionId) {
+            editSession(sessionId, minsStudied);
+        } else {
+            createSession(courseId, minsStudied);
+        }
     } else {
         console.error("To save the session, the studying time must be of at least a minute.");
     }
@@ -136,4 +138,22 @@ function fetchCourses() {
         .catch(error => console.error(error));
 }
 
-fetchCourses();
+document.addEventListener('DOMContentLoaded', function() {
+    fetchCourses(); // Cargar los cursos al cargar la página
+
+    const form = document.getElementById('session-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+        const courseId = document.getElementById('course-select').value;
+        const minsStudied = parseInt(document.getElementById('mins').textContent); // Obtener los mins estudiados del front
+
+        // Verificar que se haya seleccionado un curso
+        if (!courseId) {
+            alert('Por favor, selecciona un curso.');
+            return;
+        }
+
+        saveSession(minsStudied);
+    });
+});

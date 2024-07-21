@@ -8,7 +8,9 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     credits = db.Column(db.Integer, nullable=False)
+
     sessions = db.relationship("Sesion", cascade="all, delete-orphan")
+
 
     def __repr__(self):
         return f"<Course {self.name}><ID {self.id}><{self.credits} credits><Sessions {self.sessions}>"
