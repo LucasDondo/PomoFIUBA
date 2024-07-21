@@ -24,8 +24,7 @@ function loop() {
     const secsElem = document.getElementById("secs");
     const hundredthsElem = document.getElementById("hundredths");
 
-    if (hoursElem && minsElem && secsElem && hundredthsElem) {
-        hoursElem.innerHTML = hours < 10 ? ZERO + hours : hours;
+    if (minsElem && secsElem && hundredthsElem) {
         minsElem.innerHTML = mins < 10 ? ZERO + mins : mins;
         secsElem.innerHTML = secs < 10 ? ZERO + secs : secs;
         hundredthsElem.innerHTML = hundredths < 10 ? ZERO + hundredths : hundredths;
@@ -47,7 +46,7 @@ function stop() {
     document.getElementById("continue").disabled = false;
 }
 
-function continue_timer() {
+function continueTimer() {
     interval_id = setInterval(loop, 10);
     document.getElementById("continue").disabled = true;
     document.getElementById("stop").disabled = false;
@@ -56,10 +55,12 @@ function continue_timer() {
 function reset() {
     clearInterval(interval_id);
     hours = INIT_TIMES, mins = INIT_TIMES, secs = INIT_TIMES, hundredths = INIT_TIMES;
+
     document.getElementById("hours").innerHTML = DOUBLE_ZERO;
     document.getElementById("mins").innerHTML = DOUBLE_ZERO;
     document.getElementById("secs").innerHTML = DOUBLE_ZERO;
     document.getElementById("hundredths").innerHTML = DOUBLE_ZERO;
+
     document.getElementById("start").disabled = false;
     document.getElementById("stop").disabled = true;
     document.getElementById("continue").disabled = true;
@@ -77,18 +78,18 @@ function createSession(courseId, minsStudied) {
             "mins_studied": minsStudied
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.session) {
-            sessionId = data.session.id;
-        } else {
-            throw new Error("Error while creating the new session. No session object was returned.");
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        alert("Ocurrió un error al crear la sesión. Seguí estudiando, a ver si se resuelve.");
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.session) {
+                sessionId = data.session.id;
+            } else {
+                throw new Error("Error while creating the new session. No session object was returned.");
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            alert("Ocurrió un error al crear la sesión. Seguí estudiando, a ver si se resuelve.");
+        });
 }
 
 function editSession(id, minsStudied) {
@@ -102,11 +103,11 @@ function editSession(id, minsStudied) {
             "mins_studied": minsStudied
         })
     })
-    .then(response => response.json())
-    .catch(error => {
-        console.error(error);
-        alert("Ocurrió un error al editar la sesión. Seguí estudiando, a ver si se resuelve.");
-    });
+        .then(response => response.json())
+        .catch(error => {
+            console.error(error);
+            alert("Ocurrió un error al editar la sesión. Seguí estudiando, a ver si se resuelve.");
+        });
 }
 
 function saveSession(minsStudied) {
@@ -123,7 +124,7 @@ function saveSession(minsStudied) {
     }
 }
 
-function fetchCourses() {
+function loadCourses() {
     fetch(`${BASE_URL}/cursos`)
         .then(response => response.json())
         .then(data => {
@@ -138,22 +139,4 @@ function fetchCourses() {
         .catch(error => console.error(error));
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    fetchCourses(); // Cargar los cursos al cargar la página
-
-    const form = document.getElementById('session-form');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevenir el envío por defecto del formulario
-
-        const courseId = document.getElementById('course-select').value;
-        const minsStudied = parseInt(document.getElementById('mins').textContent); // Obtener los mins estudiados del front
-
-        // Verificar que se haya seleccionado un curso
-        if (!courseId) {
-            alert('Por favor, selecciona un curso.');
-            return;
-        }
-
-        saveSession(minsStudied);
-    });
-});
+loadCourses();
