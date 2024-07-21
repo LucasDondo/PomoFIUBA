@@ -1,50 +1,49 @@
-let horas = 0, minutos = 0, segundos = 0, centesimas = 0;
-let cronometroInterval;
+let hours = 0, mins = 0, secs = 0, hundredths = 0;
 
-function iniciarCronometro() {
-    centesimas++;
-    if (centesimas > 99) {
-        centesimas = 0;
-        segundos++;
-        if (segundos > 59) {
-            segundos = 0;
-            minutos++;
-            if (minutos > 59) {
-                minutos = 0;
-                horas++;
+function loop() {
+    hundredths++;
+    if (hundredths > 99) {
+        hundredths = 0;
+        secs++;
+        if (secs > 59) {
+            secs = 0;
+            mins++;
+            if (mins > 59) {
+                mins = 0;
+                hours++;
             }
-            document.getElementById("Minutos").innerHTML = minutos < 10 ? "0" + minutos : minutos;
+            document.getElementById("Minutos").innerHTML = mins < 10 ? "0" + mins : mins;
         }
-        document.getElementById("Segundos").innerHTML = segundos < 10 ? "0" + segundos : segundos;
+        document.getElementById("Segundos").innerHTML = secs < 10 ? "0" + secs : secs;
     }
-    document.getElementById("Centesimas").innerHTML = centesimas < 10 ? "0" + centesimas : centesimas;
+    document.getElementById("Centesimas").innerHTML = hundredths < 10 ? "0" + hundredths : hundredths;
 }
 
 function start() {
-    cronometroInterval = setInterval(iniciarCronometro, 10);
+    interval_id = setInterval(loop, 10);
     document.getElementById("start").disabled = true;
     document.getElementById("stop").disabled = false;
     document.getElementById("reset").disabled = false;
 }
 
 function stop() {
-    clearInterval(cronometroInterval);
+    clearInterval(interval_id);
     document.getElementById("stop").disabled = true;
     document.getElementById("continue").disabled = false;
 }
 
-function continueReloj() {
-    cronometroInterval = setInterval(iniciarCronometro, 10);
+function continue_pomodoro() {
+    interval_id = setInterval(loop, 10);
     document.getElementById("continue").disabled = true;
     document.getElementById("stop").disabled = false;
 }
 
 function reset() {
-    clearInterval(cronometroInterval);
-    horas = 0;
-    minutos = 0;
-    segundos = 0;
-    centesimas = 0;
+    clearInterval(interval_id);
+    hours = 0;
+    mins = 0;
+    secs = 0;
+    hundredths = 0;
     document.getElementById("Horas").innerHTML = "00";
     document.getElementById("Minutos").innerHTML = "00";
     document.getElementById("Segundos").innerHTML = "00";
@@ -82,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Prevenir el envío por defecto del formulario
 
         const courseId = document.getElementById('course-select').value;
-        const minsStudied = parseInt(document.getElementById('Minutos').textContent); // Obtener los minutos estudiados del front
+        const minsStudied = parseInt(document.getElementById('Minutos').textContent); // Obtener los mins estudiados del front
 
         // Verificar que se haya seleccionado un curso
         if (!courseId) {
@@ -114,4 +113,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
