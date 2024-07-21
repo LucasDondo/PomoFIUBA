@@ -160,6 +160,30 @@ def get_sessions():
     except Exception as error:
         return jsonify({"message": str(error)}), 500
 
+@app.put("/actualizar_sesion_<int:id>")
+def actualizar_sesion(id):
+    try:
+        data = request.json
+        mins_studied = data.get("mins_studied")
+        session = Sesion.query.filter_by(id=id).first()
+        if session:
+            if mins_studied:
+                session.mins_studied = mins_studied
+            db.session.commit()
+            return jsonify(
+                {
+                    "session": {
+                        "id": session.id,
+                        "course_id": session.course_id,
+                        "mins_studied": session.mins_studied,
+                    }
+                }
+            )
+        else:
+            return jsonify({"message": f"Session with ID {id} does not exist."}), 404
+    except Exception as error:
+        return jsonify({"message": str(error)}), 500
+    
 if __name__ == "__main__":
     db.init_app(app)
     with app.app_context():
