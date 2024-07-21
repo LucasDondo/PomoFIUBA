@@ -32,7 +32,7 @@ function stop() {
     document.getElementById("continue").disabled = false;
 }
 
-function continue_pomodoro() {
+function continue_timer() {
     interval_id = setInterval(loop, 10);
     document.getElementById("continue").disabled = true;
     document.getElementById("stop").disabled = false;
