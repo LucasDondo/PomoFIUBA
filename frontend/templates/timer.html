@@ -1,34 +1,28 @@
 {% extends "layout.html" %}
-{% block title %}Timer{% endblock %}
+{% block title %}PomoFIUBA{% endblock %}
 {% block body %}
 <div class="form-container">
-    <form id="session-form">
-        <div class="form-group">
-            <label for="course-select">Selecciona un curso:</label>
-            <select id="course-select" name="course_id">
-            </select>
-        </div>
-        <div class="form-group">
-            <button type="submit">Agregar sesión</button>
-        </div>
-    </form>
+  <div class="form-group">
+    <label for="course-select">Selecciona un curso:</label>
+    <select id="course-select" name="course_id"></select>
+  </div>
 </div>
-    <div class="wrapper">
-        <div class="time">
-            <span id="hours">00</span>
-            <span class="colon">:</span>
-            <span id="mins">00</span>
-            <span class="colon">:</span>
-            <span id="secs">00</span>
-            <span class="colon ms-color">:</span>
-            <span id="hundredths">00</span>
-        </div>
-        <div class="buttons">
-            <button id="start" onclick="start()">Empezar</button>
-            <button id="stop" onclick="stop()" disabled>Pausar</button>
-            <button id="continue" onclick="continue_timer()" disabled>Continuar</button>
-            <button id="reset" onclick="reset()" disabled>Reiniciar</button>
-        </div>
-    </div>
+<div class="wrapper">
+  <div class="time">
+    <span id="hours">00</span>
+    <span class="colon">:</span>
+    <span id="mins">00</span>
+    <span class="colon">:</span>
+    <span id="secs">00</span>
+    <span class="colon ms-color">:</span>
+    <span id="hundredths">00</span>
+  </div>
+  <div class="buttons">
+    <button id="start" onclick="start()">Empezar</button>
+    <button id="stop" onclick="stop()" disabled>Pausar</button>
+    <button id="continue" onclick="continue_timer()" disabled>Continuar</button>
+    <button id="reset" onclick="reset()" disabled>Reiniciar</button>
+  </div>
+</div>
 {% endblock %}
 {% block script %}timer{% endblock %}

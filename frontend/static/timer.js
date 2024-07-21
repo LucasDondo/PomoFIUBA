@@ -1,34 +1,36 @@
-let hours = 0, mins = 0, secs = 0, hundredths = 0;
-let interval_id;
+const BASE_URL = "http://localhost:5000";
+const INIT_TIMES = 0, ZERO = "0", DOUBLE_ZERO = "00";
+let hours = INIT_TIMES, mins = INIT_TIMES, secs = INIT_TIMES, hundredths = INIT_TIMES;
+let interval_id, sessionId;
 
 function loop() {
     hundredths++;
     if (hundredths > 99) {
-        hundredths = 0;
+        hundredths = INIT_TIMES;
         secs++;
         if (secs > 59) {
-            secs = 0;
+            secs = INIT_TIMES;
             mins++;
+            saveSession(mins);
             if (mins > 59) {
-                mins = 0;
+                mins = INIT_TIMES;
                 hours++;
             }
         }
     }
 
-    // Actualiza los elementos HTML con los nuevos IDs
     const hoursElem = document.getElementById("hours");
     const minsElem = document.getElementById("mins");
     const secsElem = document.getElementById("secs");
     const hundredthsElem = document.getElementById("hundredths");
 
     if (hoursElem && minsElem && secsElem && hundredthsElem) {
-        hoursElem.innerHTML = hours < 10 ? "0" + hours : hours;
-        minsElem.innerHTML = mins < 10 ? "0" + mins : mins;
-        secsElem.innerHTML = secs < 10 ? "0" + secs : secs;
-        hundredthsElem.innerHTML = hundredths < 10 ? "0" + hundredths : hundredths;
+        hoursElem.innerHTML = hours < 10 ? ZERO + hours : hours;
+        minsElem.innerHTML = mins < 10 ? ZERO + mins : mins;
+        secsElem.innerHTML = secs < 10 ? ZERO + secs : secs;
+        hundredthsElem.innerHTML = hundredths < 10 ? ZERO + hundredths : hundredths;
     } else {
-        console.error("Uno o más elementos no se encuentran en el DOM.");
+        console.error("Not all time elements (hours, mins, secs and hundredths) appear in the HTML document.");
     }
 }
 
@@ -53,76 +55,85 @@ function continue_timer() {
 
 function reset() {
     clearInterval(interval_id);
-    hours = 0;
-    mins = 0;
-    secs = 0;
-    hundredths = 0;
-    document.getElementById("hours").innerHTML = "00";
-    document.getElementById("mins").innerHTML = "00";
-    document.getElementById("secs").innerHTML = "00";
-    document.getElementById("hundredths").innerHTML = "00";
+    hours = INIT_TIMES, mins = INIT_TIMES, secs = INIT_TIMES, hundredths = INIT_TIMES;
+    document.getElementById("hours").innerHTML = DOUBLE_ZERO;
+    document.getElementById("mins").innerHTML = DOUBLE_ZERO;
+    document.getElementById("secs").innerHTML = DOUBLE_ZERO;
+    document.getElementById("hundredths").innerHTML = DOUBLE_ZERO;
     document.getElementById("start").disabled = false;
     document.getElementById("stop").disabled = true;
     document.getElementById("continue").disabled = true;
     document.getElementById("reset").disabled = true;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Función para obtener y cargar los cursos en el select
-    function fetchCourses() {
-        fetch('http://localhost:5000/cursos') // Asegúrate de usar la URL completa si estás ejecutando el frontend en un puerto diferente
-            .then(response => response.json())
-            .then(data => {
-                const courseSelect = document.getElementById('course-select');
-                data.forEach(course => {
-                    const option = document.createElement('option');
-                    option.value = course.id;
-                    option.textContent = course.name;
-                    courseSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
-    fetchCourses(); // Cargar los cursos al cargar la página
-
-    const form = document.getElementById('session-form');
-    
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevenir el envío por defecto del formulario
-
-        const courseId = document.getElementById('course-select').value;
-        const minsStudied = parseInt(document.getElementById('Minutos').textContent); // Obtener los mins estudiados del front
-
-        // Verificar que se haya seleccionado un curso
-        if (!courseId) {
-            alert('Por favor, selecciona un curso.');
-            return;
-        }
-
-        fetch('http://localhost:5000/nueva_sesion', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                course_id: courseId,
-                mins_studied: minsStudied
-            })
+function createSession(courseId, minsStudied) {
+    fetch(`${BASE_URL}/new_session`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "course_id": courseId,
+            "mins_studied": minsStudied
         })
+    })
         .then(response => response.json())
         .then(data => {
-            if (data.message) {
-                alert(data.message); // Muestra el mensaje de error si existe
+            if (data.session) {
+                sessionId = data.session.id
             } else {
-                console.log(data.session); // Muestra los datos de la sesión creada
-                // Aquí puedes hacer otras acciones, como actualizar la interfaz
+                throw new Error("Error while creating the new session. No session object was returned.");
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error(error);
+            alert("Ocurrió un error al crear la sesión. Seguí estudiando, a ver si se resuelve.");
         });
-    });
-});
+};
+
+function editSession(id, minsStudied) {
+    fetch(`${BASE_URL}/edit_session`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "id": id,
+            "mins_studied": minsStudied
+        })
+    })
+        .then(response => response.json())
+        .catch(error => {
+            console.error(error);
+            alert("Ocurrió un error al editar la sesión. Seguí estudiando, a ver si se resuelve.");
+        });
+}
+
+function saveSession(minsStudied) {
+    const courseId = document.getElementById('course-select').value;
+
+    if (minsStudied == 1) {
+        createSession(courseId, minsStudied);
+    } else if (minsStudied > 1) {
+        editSession(sessionId, minsStudied);
+    } else {
+        console.error("To save the session, the studying time must be of at least a minute.");
+    }
+}
+
+function fetchCourses() {
+    fetch(`${BASE_URL}/cursos`)
+        .then(response => response.json())
+        .then(data => {
+            const courseSelect = document.getElementById('course-select');
+            data.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.name;
+                courseSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error(error));
+}
+
+fetchCourses();
