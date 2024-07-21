@@ -4,20 +4,9 @@ from models import db, Course, Sesion
 
 app = Flask(__name__)
 CORS(app)
-
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     "postgresql+psycopg2://postgres:postgres@localhost:5432/pomofiuba_db"
 )
-
-@app.route("/datos_temporizador", methods=["GET"])
-def datos_temporizador():
-    courses = Course.query.all()
-    sessions = Sesion.query.all()
-
-    courses_data = [{"id": course.id, "name": course.name, "credits": course.credits} for course in courses]
-    sessions_data = [{"id": session.id, "course_id": session.course_id, "mins_studied": session.mins_studied} for session in sessions]
-    
-    return jsonify({"courses": courses_data, "sessions": sessions_data})
 
 @app.get("/cursos")
 def courses():
@@ -144,9 +133,18 @@ def nueva_sesion():
             }
         }), 201
 
-
     except Exception as error:
         return jsonify({"message": str(error)}), 500
+
+@app.route("/datos_temporizador", methods=["GET"])
+def datos_temporizador():
+    courses = Course.query.all()
+    sessions = Sesion.query.all()
+
+    courses_data = [{"id": course.id, "name": course.name, "credits": course.credits} for course in courses]
+    sessions_data = [{"id": session.id, "course_id": session.course_id, "mins_studied": session.mins_studied} for session in sessions]
+    
+    return jsonify({"courses": courses_data, "sessions": sessions_data})
 
 @app.get("/sesiones")
 def get_sessions():
@@ -161,16 +159,6 @@ def get_sessions():
         return jsonify(sessions_data), 200
     except Exception as error:
         return jsonify({"message": str(error)}), 500
-
-
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     db.init_app(app)
