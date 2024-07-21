@@ -5,16 +5,16 @@ app = Flask(__name__, "/static")
 CORS(app)
 
 @app.route("/")
-def pomofiuba():
-    return render_template("pomofiuba.html")
+def courses():
+    return render_template("courses.html")
 
 @app.route("/timer")
 def timer():
     return render_template("timer.html")
 
-@app.route('/biblioteca')
-def biblioteca():
-    return render_template('biblioteca.html')
+@app.route("/library")
+def library():
+    return render_template("library.html")
 
 @app.route("/playlist")
 def playlist():
