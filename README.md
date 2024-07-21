@@ -29,13 +29,13 @@ Instead of using a traditional database structure with users and courses, we opt
     ```
 
 2. **Set up the environment**:
-   - Create and activate a virtual environment:
+    Create and activate a virtual environment:
      ```bash
      python -m venv venv
      source venv/bin/activate  # On Windows use venv\Scripts\activate
      ```
 
-   - Install the dependencies:
+    Install the dependencies:
      ```bash
      pip install -r requirements.txt
      ```
