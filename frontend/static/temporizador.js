@@ -1,6 +1,4 @@
 let horas = 0, minutos = 0, segundos = 0, centesimas = 0;
-let tiempoTotalEnMinutos = 0;
-let tiempoTotalEnSegundos = 0;
 let cronometroInterval;
 
 function iniciarCronometro() {
@@ -20,8 +18,6 @@ function iniciarCronometro() {
         document.getElementById("Segundos").innerHTML = segundos < 10 ? "0" + segundos : segundos;
     }
     document.getElementById("Centesimas").innerHTML = centesimas < 10 ? "0" + centesimas : centesimas;
-
-    tiempoTotalEnSegundos = horas * 3600 + minutos * 60 + segundos;
 }
 
 function start() {
@@ -58,3 +54,64 @@ function reset() {
     document.getElementById("continue").disabled = true;
     document.getElementById("reset").disabled = true;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para obtener y cargar los cursos en el select
+    function fetchCourses() {
+        fetch('http://localhost:5000/cursos') // Asegúrate de usar la URL completa si estás ejecutando el frontend en un puerto diferente
+            .then(response => response.json())
+            .then(data => {
+                const courseSelect = document.getElementById('course-select');
+                data.forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.id;
+                    option.textContent = course.name;
+                    courseSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    fetchCourses(); // Cargar los cursos al cargar la página
+
+    const form = document.getElementById('session-form');
+    
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+        const courseId = document.getElementById('course-select').value;
+        const minsStudied = parseInt(document.getElementById('Minutos').textContent); // Obtener los minutos estudiados del front
+
+        // Verificar que se haya seleccionado un curso
+        if (!courseId) {
+            alert('Por favor, selecciona un curso.');
+            return;
+        }
+
+        fetch('http://localhost:5000/nueva_sesion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                course_id: courseId,
+                mins_studied: minsStudied
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message); // Muestra el mensaje de error si existe
+            } else {
+                console.log(data.session); // Muestra los datos de la sesión creada
+                // Aquí puedes hacer otras acciones, como actualizar la interfaz
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+
