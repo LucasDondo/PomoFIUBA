@@ -6,3 +6,4 @@ Este proyecto surgió con el fin de completar el TP del curso [Introducción al 
 - [Nicolás Francisco Mazzeo](https://github.com/ElMalditoNINE9)
 ## 🔗 Bibliografía extra
 - Hemos utilizado _[template inheritance](https://flask.palletsprojects.com/en/latest/patterns/templateinheritance)_ para que todos los archivos HTML sean consistentes.
+- Para el correcto funcionamiento del pomodoro utilizamos [`setInterval`](https://developer.mozilla.org/en-US/docs/Web/API/setInterval) y [`clearInterval`](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval).
