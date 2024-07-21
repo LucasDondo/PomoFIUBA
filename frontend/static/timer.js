@@ -1,4 +1,5 @@
 let hours = 0, mins = 0, secs = 0, hundredths = 0;
+let interval_id;
 
 function loop() {
     hundredths++;
@@ -12,11 +13,23 @@ function loop() {
                 mins = 0;
                 hours++;
             }
-            document.getElementById("Minutos").innerHTML = mins < 10 ? "0" + mins : mins;
         }
-        document.getElementById("Segundos").innerHTML = secs < 10 ? "0" + secs : secs;
     }
-    document.getElementById("Centesimas").innerHTML = hundredths < 10 ? "0" + hundredths : hundredths;
+
+    // Actualiza los elementos HTML con los nuevos IDs
+    const hoursElem = document.getElementById("hours");
+    const minsElem = document.getElementById("mins");
+    const secsElem = document.getElementById("secs");
+    const hundredthsElem = document.getElementById("hundredths");
+
+    if (hoursElem && minsElem && secsElem && hundredthsElem) {
+        hoursElem.innerHTML = hours < 10 ? "0" + hours : hours;
+        minsElem.innerHTML = mins < 10 ? "0" + mins : mins;
+        secsElem.innerHTML = secs < 10 ? "0" + secs : secs;
+        hundredthsElem.innerHTML = hundredths < 10 ? "0" + hundredths : hundredths;
+    } else {
+        console.error("Uno o más elementos no se encuentran en el DOM.");
+    }
 }
 
 function start() {
@@ -44,10 +57,10 @@ function reset() {
     mins = 0;
     secs = 0;
     hundredths = 0;
-    document.getElementById("Horas").innerHTML = "00";
-    document.getElementById("Minutos").innerHTML = "00";
-    document.getElementById("Segundos").innerHTML = "00";
-    document.getElementById("Centesimas").innerHTML = "00";
+    document.getElementById("hours").innerHTML = "00";
+    document.getElementById("mins").innerHTML = "00";
+    document.getElementById("secs").innerHTML = "00";
+    document.getElementById("hundredths").innerHTML = "00";
     document.getElementById("start").disabled = false;
     document.getElementById("stop").disabled = true;
     document.getElementById("continue").disabled = true;
