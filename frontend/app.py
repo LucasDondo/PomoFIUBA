@@ -8,6 +8,7 @@ CORS(app)
 def pomofiuba():
     return render_template("pomofiuba.html")
 
+
 @app.route("/timer")
 def timer():
     return render_template("timer.html")
@@ -15,7 +16,7 @@ def timer():
 @app.route('/biblioteca')
 def biblioteca():
     return render_template('biblioteca.html')
-
+  
 @app.route("/playlist")
 def playlist():
     return render_template("playlist.html")
