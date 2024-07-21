@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Pomodoro{% endblock %}
+{% block title %}Timer{% endblock %}
 {% block body %}
 <div class="form-container">
     <form id="session-form">
@@ -26,9 +26,9 @@
     <div class="buttons">
         <button id="start" onclick="start()">Empezar</button>
         <button id="stop" onclick="stop()" disabled>Pausar</button>
-        <button id="continue" onclick="continue_pomodoro()" disabled>Continuar</button>
+        <button id="continue" onclick="continue_timer()" disabled>Continuar</button>
         <button id="reset" onclick="reset()" disabled>Reiniciar</button>
     </div>
 </div>
 {% endblock %}
-{% block script %}temporizador{% endblock %}
+{% block script %}timer{% endblock %}
