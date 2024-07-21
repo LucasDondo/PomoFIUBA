@@ -9,7 +9,8 @@ class Course(db.Model):
     credits = db.Column(db.Integer, nullable=False)
     mins_studied = db.Column(db.Integer, nullable=False, default=0)
     
-    sessions = db.relationship('Sesion', backref='course', lazy=True)
+        # Aquí especificamos el comportamiento de cascade
+    sessions = db.relationship('Sesion', backref='course', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Course {self.name}><ID {self.id}><{self.credits} credits><{self.mins_studied} minutes studied>"
