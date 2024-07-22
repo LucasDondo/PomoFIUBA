@@ -44,5 +44,3 @@ Instead of using a traditional database structure with users and courses, we opt
    ```bash
    python3 frontend/app.py
    python3 backend/app.py
-
-si esta mal escrito en ingles mala mia, no muy bien todavia ando practicando.
