@@ -46,7 +46,7 @@ function changeStatus() {
 
 function reset() {
     clearInterval(intervalId);
-    hours = INIT_TIMES, mins = 5, secs = 59, hundredths = INIT_TIMES;
+    hours = INIT_TIMES, mins = 0, secs = 0, hundredths = INIT_TIMES;
 
     document.getElementById("hours").innerHTML = DOUBLE_ZERO;
     document.getElementById("mins").innerHTML = DOUBLE_ZERO;

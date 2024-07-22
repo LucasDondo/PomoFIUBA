@@ -11,7 +11,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgb(255, 255, 255);
 }
 
 nav {
@@ -22,7 +21,6 @@ nav {
     position: fixed;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,7 +56,7 @@ nav a:hover {
     justify-content: center;
     align-items: center;
     border-radius: 6px;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.9);
+    cursor: pointer;
 }
 
 .wrapper .time span {
@@ -93,7 +91,7 @@ nav a:hover {
     font-size: 19px;
     font-weight: 500;
     border: pointer;
-    box-shadow: 5px 3.5px 5px rgba(0, 0, 0, 0.9);
+    cursor: pointer;
 }
 
 .button-container {
@@ -109,6 +107,11 @@ nav a:hover {
     cursor: pointer;
     background-color: rgb(211, 9, 9);
     font-weight: 500;
+}
+
+.center-button-container {
+    display: flex;
+    justify-content: center;
 }
 
 .buttons button.active,
@@ -184,9 +187,7 @@ li {
     text-align: center;
 }
 
-.main-title,
-.section-title,
-.info-text {
+.main-title{
     margin-bottom: 20px;
     text-align: center;
 }
