@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="wrapper">
-  <div class="time">
+  <div class="buttons time" onclick="changeStatus()">
     <span id="hours">00</span>
     <span class="colon">:</span>
     <span id="mins">00</span>
@@ -18,10 +18,7 @@
     <span id="hundredths">00</span>
   </div>
   <div class="buttons">
-    <button id="start" onclick="start()">Empezar</button>
-    <button id="stop" onclick="stop()" disabled>Pausar</button>
-    <button id="continue" onclick="continueTimer()" disabled>Continuar</button>
-    <button id="reset" onclick="reset()" disabled>Reiniciar</button>
+    <button id="reset" onclick="reset()">🔄️</button>
   </div>
 </div>
 {% endblock %}

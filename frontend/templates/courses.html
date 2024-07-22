@@ -7,15 +7,14 @@
     <ul id="courses_list">
       <li id="new_course_form">
         <div class="form-container">
-          <form onsubmit="create_new_course(event)">
+          <form onsubmit="createNewCourse(event)">
             <div class="form-group">
               <label for="name">Nombre del curso:</label>
               <input name="name" id="name" placeholder="tal" required>
             </div>
             <div class="form-group">
               <label for="credits">Créditos:</label>
-              <input name="credits" id="credits" type="number" min="1" max="144" value="1"
-                onchange="setPluralOrSingular()" required>
+              <input name="credits" id="credits" type="number" min="1" max="144" value="1" required>
             </div>
             <div class="form-group">
               <button type="submit">Agregar</button>

@@ -26,7 +26,7 @@ function editCourse(event) {
 function startEditingCourse(course) {
     const li = document.getElementById(course.id);
     li.innerHTML = `
-        <form onsubmit="edit_course(event)">
+        <form onsubmit="editCourse(event)">
           <input name="id" type="hidden" value="${course.id}"/>
           El curso se llama
           <input name="name" value="${course.name}" required>
@@ -61,7 +61,7 @@ function addCourseToList(coursesList, course, newCourseForm) {
     buildCourse(course);
 }
 
-function show_courses(courses) {
+function showCourses(courses) {
     const coursesList = document.getElementById("courses_list");
     const newCourseForm = document.getElementById("new_course_form");
     for (let i = 0; i < courses.length; i++) {
@@ -69,7 +69,7 @@ function show_courses(courses) {
     }
 }
 
-function create_new_course(event) {
+function createNewCourse(event) {
     event.preventDefault();
 
     const newCourse = new FormData(event.target);
@@ -103,5 +103,5 @@ function create_new_course(event) {
 //     }
 // }
 
-fetch(`${BASE_URL}/courses`).then(response => response.json()).then(show_courses).catch(error => console.error(error));
-setPluralOrSingular();
+fetch(`${BASE_URL}/courses`).then(response => response.json()).then(showCourses).catch(error => console.error(error));
+// setPluralOrSingular();

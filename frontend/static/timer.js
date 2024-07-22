@@ -2,6 +2,7 @@ const BASE_URL = "http://localhost:5000";
 const INIT_TIMES = 0, ZERO = "0", DOUBLE_ZERO = "00";
 let hours = INIT_TIMES, mins = INIT_TIMES, secs = INIT_TIMES, hundredths = INIT_TIMES;
 let intervalId, sessionId;
+let playing = false;
 
 function loop() {
     hundredths++;
@@ -24,7 +25,7 @@ function loop() {
     const secsElem = document.getElementById("secs");
     const hundredthsElem = document.getElementById("hundredths");
 
-    if (minsElem && secsElem && hundredthsElem) {
+    if (hoursElem && minsElem && secsElem && hundredthsElem) {
         minsElem.innerHTML = mins < 10 ? ZERO + mins : mins;
         secsElem.innerHTML = secs < 10 ? ZERO + secs : secs;
         hundredthsElem.innerHTML = hundredths < 10 ? ZERO + hundredths : hundredths;
@@ -33,38 +34,24 @@ function loop() {
     }
 }
 
-function start() {
-    intervalId = setInterval(loop, 10);
-    document.getElementById("start").disabled = true;
-    document.getElementById("stop").disabled = false;
-    document.getElementById("reset").disabled = false;
-}
-
-function stop() {
-    clearInterval(intervalId);
-    document.getElementById("stop").disabled = true;
-    document.getElementById("continue").disabled = false;
-}
-
-function continueTimer() {
-    intervalId = setInterval(loop, 10);
-    document.getElementById("continue").disabled = true;
-    document.getElementById("stop").disabled = false;
+function changeStatus() {
+    if (!playing) {
+        intervalId = setInterval(loop, 10);
+        playing = true;
+    } else if (playing) {
+        clearInterval(intervalId);
+        playing = false;
+    }
 }
 
 function reset() {
     clearInterval(intervalId);
-    hours = INIT_TIMES, mins = INIT_TIMES, secs = INIT_TIMES, hundredths = INIT_TIMES;
+    hours = INIT_TIMES, mins = 5, secs = 59, hundredths = INIT_TIMES;
 
     document.getElementById("hours").innerHTML = DOUBLE_ZERO;
     document.getElementById("mins").innerHTML = DOUBLE_ZERO;
     document.getElementById("secs").innerHTML = DOUBLE_ZERO;
     document.getElementById("hundredths").innerHTML = DOUBLE_ZERO;
-
-    document.getElementById("start").disabled = false;
-    document.getElementById("stop").disabled = true;
-    document.getElementById("continue").disabled = true;
-    document.getElementById("reset").disabled = true;
 }
 
 function createSession(courseId, minsStudied) {
